@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Weather App</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to top, #2ecc71, #a8e063, #6dd5ed);
+  overflow: hidden;
+  color: white;
+}
+
+/* 🌑 Soft dots */
+body::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(rgba(0,0,0,0.3) 3px, transparent 3px);
+  background-size: 70px 70px;
+}
+
+/* 🌳 Trees */
+.tree {
+  position: absolute;
+  bottom: 0;
+  font-size: 70px;
+}
+
+.tree:nth-child(1) { left: 5%; }
+.tree:nth-child(2) { left: 20%; }
+.tree:nth-child(3) { left: 70%; }
+.tree:nth-child(4) { left: 85%; }
+
+/* 🐦 Birds */
+.bird {
+  position: absolute;
+  top: 25%;
+  font-size: 22px;
+  animation: fly 18s linear infinite;
+}
+
+.bird:nth-child(5) { left: -60px; animation-delay: 0s; }
+.bird:nth-child(6) { left: -120px; animation-delay: 6s; }
+.bird:nth-child(7) { left: -180px; animation-delay: 12s; }
+
+@keyframes fly {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(120vw) translateY(-40px);
+  }
+}
+
+/* 🌟 Glass Card */
+.container {
+  position: relative;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  padding: 30px;
+  border-radius: 20px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  z-index: 2;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+/* Input */
+input {
+  padding: 10px;
+  width: 65%;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+/* Button */
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #27ae60;
+  color: white;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #1e8449;
+}
+
+/* Weather */
+.weather {
+  margin-top: 20px;
+  display: none;
+}
+
+.temp {
+  font-size: 42px;
+  font-weight: bold;
+}
+
+.condition {
+  margin-top: 10px;
+}
+
+.error {
+  margin-top: 10px;
+  color: #ffe6e6;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🌳 Trees -->
+<div class="tree">🌳</div>
+<div class="tree">🌲</div>
+<div class="tree">🌴</div>
+<div class="tree">🌳</div>
+
+<!-- 🐦 Birds -->
+<div class="bird">🐦</div>
+<div class="bird">🐦</div>
+<div class="bird">🐦</div>
+
+<div class="container">
+  <h1>🌿 Weather App</h1>
+
+  <input type="text" id="city" placeholder="Enter city">
+  <button onclick="getWeather()">Search</button>
+
+  <div class="weather" id="weatherBox">
+    <div class="temp" id="temp"></div>
+    <div class="condition" id="condition"></div>
+  </div>
+
+  <div class="error" id="error"></div>
+</div>
+
+<script>
+const apiKey = "78a5855ff7e246a88d0152514261903";
+
+async function getWeather() {
+  const city = document.getElementById("city").value;
+  const weatherBox = document.getElementById("weatherBox");
+  const errorBox = document.getElementById("error");
+
+  if (!city) {
+    errorBox.textContent = "Please enter a city name";
+    weatherBox.style.display = "none";
+    return;
+  }
+
+  const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=yes`;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.error) {
+      errorBox.textContent = data.error.message;
+      weatherBox.style.display = "none";
+      return;
+    }
+
+    document.getElementById("temp").textContent = data.current.temp_c + "°C";
+    document.getElementById("condition").textContent = data.current.condition.text;
+
+    weatherBox.style.display = "block";
+    errorBox.textContent = "";
+
+  } catch (err) {
+    errorBox.textContent = "Error fetching weather data";
+  }
+}
+</script>
+
+</body>
+</html>
