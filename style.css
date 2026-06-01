@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #222;
+}
+
+.gameArea {
+    width: 400px;
+    height: 100vh;
+    background: #555;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    border-left: 5px solid white;
+    border-right: 5px solid white;
+}
+
+.car {
+    width: 50px;
+    height: 100px;
+    background: red;
+    position: absolute;
+    bottom: 20px;
+    left: 175px;
+    border-radius: 10px;
+}
+
+.enemy {
+    width: 50px;
+    height: 100px;
+    background: yellow;
+    position: absolute;
+    top: -120px;
+    border-radius: 10px;
+}
+
+.enemy1 { left: 50px; }
+.enemy2 { left: 175px; }
+.enemy3 { left: 300px; }
+
+.score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 24px;
+}
